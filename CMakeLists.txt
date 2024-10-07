@@ -35,7 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(pico-totp pico-totp.cpp )
+add_executable(pico-totp main.cpp )
 
 pico_set_program_name(pico-totp "pico-totp")
 pico_set_program_version(pico-totp "0.1")
