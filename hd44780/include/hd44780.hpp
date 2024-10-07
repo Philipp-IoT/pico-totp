@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <array>
 #include <string_view>
 
 #include "hardware/pio.h"
@@ -16,6 +17,8 @@
 
 namespace Driver::Hd44780
 {
+    /// Type for custom character data
+    using CustomCharacterData = std::array<uint8_t, 8>;
 
     /**
      * @brief Driver for HD44780 LCD controller
@@ -59,6 +62,17 @@ namespace Driver::Hd44780
          * @param text Text to write
          */
         void Write(std::string_view text);
+
+        /**
+         * @brief Sets a custom character
+         *
+         * @param location Location (0-7)
+         * @param charmap Character map
+         *
+         * @note The character map can be generated using the online tool at
+         *       https://omerk.github.io/lcdchargen/
+         */
+        void SetCustomCharacter(uint8_t location, const CustomCharacterData charmap);
 
     private:
         const PIO mPio;

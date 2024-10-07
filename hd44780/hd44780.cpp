@@ -3,7 +3,7 @@
  * @date 2024-10-07
  * @author Philipp Bolte (philipp@bolte.engineer)
  *
- * @brief
+ * @brief Driver for HD44780 LCD controller
  */
 
 #include "pico/stdlib.h"
@@ -92,7 +92,6 @@ namespace Driver::Hd44780
         for (const auto& c : text)
         {
             pio_sm_put_blocking(mPio, mSm, c);
-            // sleep_ms(1);
         }
         SetRs(0);
     }
@@ -109,6 +108,21 @@ namespace Driver::Hd44780
         pio_sm_exec(mPio, mSm, pio_encode_mov(pio_y, pio_osr));
         pio_sm_set_enabled(mPio, mSm, true);
         sleep_ms(1);
+    }
+
+    void Hd44780::SetCustomCharacter(uint8_t location, const CustomCharacterData charmap)
+    {
+        // Set CGRAM address
+        pio_sm_put_blocking(mPio, mSm, registers::SET_CGRAM_ADDR | (location << 3));
+        sleep_ms(1);
+
+        // Write the character data
+        SetRs(1);
+        for (const auto& c : charmap)
+        {
+            pio_sm_put_blocking(mPio, mSm, c);
+        }
+        SetRs(0);
     }
 
 }  // namespace Driver::Hd44780
