@@ -43,94 +43,94 @@ void hd44780_set_rs(PIO pio, uint sm, uint offset, uint rs) {
     sleep_ms(1);
 }
 
-// int main() {
-//     stdio_init_all();
-// #ifndef PICO_DEFAULT_LED_PIN
-// #warning pio/pwm example requires a board with a regular LED
-//     puts("Default LED pin was not defined");
-// #else
+int main() {
+    stdio_init_all();
+#ifndef PICO_DEFAULT_LED_PIN
+#warning pio/pwm example requires a board with a regular LED
+    puts("Default LED pin was not defined");
+#else
 
-//     // todo get free sm
-//     PIO pio = pio0;
-//     uint offset = 0;
-//     int sm = 0;
+    // todo get free sm
+    PIO pio = pio0;
+    uint offset = 0;
+    int sm = 0;
 
-//     offset = pio_add_program(pio, &hd44780_4bit_program);
-//     hd44780_4bit_init_program_init(pio, sm, offset, 2);
+    offset = pio_add_program(pio, &hd44780_4bit_program);
+    hd44780_4bit_init_program_init(pio, sm, offset, 2);
 
-//     const uint8_t init_sequence[] = {0b0011, 0b0010};
+    const uint8_t init_sequence[] = {0b0011, 0b0010};
 
-//     sleep_ms(20);
-//     pio_sm_put_blocking(pio, sm, init_sequence[0]);
-//     sleep_ms(10);
-//     pio_sm_put_blocking(pio, sm, init_sequence[0]);
-//     sleep_ms(1);
-//     pio_sm_put_blocking(pio, sm, init_sequence[0]);
-//     sleep_ms(1);
-//     pio_sm_put_blocking(pio, sm, init_sequence[1]);
-//     sleep_ms(10);
-//     pio_sm_set_enabled(pio, sm, false);
-//     pio_remove_program_and_unclaim_sm(&hd44780_4bit_program, pio, sm, offset);
-//     sleep_ms(10);
+    sleep_ms(20);
+    pio_sm_put_blocking(pio, sm, init_sequence[0]);
+    sleep_ms(10);
+    pio_sm_put_blocking(pio, sm, init_sequence[0]);
+    sleep_ms(1);
+    pio_sm_put_blocking(pio, sm, init_sequence[0]);
+    sleep_ms(1);
+    pio_sm_put_blocking(pio, sm, init_sequence[1]);
+    sleep_ms(10);
+    pio_sm_set_enabled(pio, sm, false);
+    pio_remove_program_and_unclaim_sm(&hd44780_4bit_program, pio, sm, offset);
+    sleep_ms(10);
     
-//     offset = pio_add_program(pio, &hd44780_program);
-//     hd44780_program_init(pio, sm, offset, 2);
+    offset = pio_add_program(pio, &hd44780_program);
+    hd44780_program_init(pio, sm, offset, 2);
 
-//     pio_sm_put_blocking(pio, sm, HD44780_FUNCTION_SET);
-//     sleep_ms(10);
-//     pio_sm_put_blocking(pio, sm, HD44780_DISPLAY_OFF);
-//     sleep_ms(10);
-//     pio_sm_put_blocking(pio, sm, HD44780_CLEAR_DISPLAY);
-//     sleep_ms(10);
-//     pio_sm_put_blocking(pio, sm, HD44780_RETURN_HOME);
-//     sleep_ms(10);
+    pio_sm_put_blocking(pio, sm, HD44780_FUNCTION_SET);
+    sleep_ms(10);
+    pio_sm_put_blocking(pio, sm, HD44780_DISPLAY_OFF);
+    sleep_ms(10);
+    pio_sm_put_blocking(pio, sm, HD44780_CLEAR_DISPLAY);
+    sleep_ms(10);
+    pio_sm_put_blocking(pio, sm, HD44780_RETURN_HOME);
+    sleep_ms(10);
 
-//     // Set RS to HIGH
-//     hd44780_set_rs(pio, sm, offset, 1);
+    // Set RS to HIGH
+    hd44780_set_rs(pio, sm, offset, 1);
 
-//     const char HelloWorld[] = "Hello, World!";
-//     for (int i = 0; i < sizeof(HelloWorld) - 1; i++) {
-//         pio_sm_put_blocking(pio, sm, HelloWorld[i]);
-//         sleep_ms(1);
-//     }
+    const char HelloWorld[] = "Hello, World!";
+    for (int i = 0; i < sizeof(HelloWorld) - 1; i++) {
+        pio_sm_put_blocking(pio, sm, HelloWorld[i]);
+        sleep_ms(1);
+    }
 
-//     // Set RS to LOW again
-//     hd44780_set_rs(pio, sm, offset, 0);
+    // Set RS to LOW again
+    hd44780_set_rs(pio, sm, offset, 0);
 
-//     pio_sm_put_blocking(pio, sm, HD44780_DISPLAY_ON);
-//     sleep_ms(10);
+    pio_sm_put_blocking(pio, sm, HD44780_DISPLAY_ON);
+    sleep_ms(10);
 
-//     uint8_t i = 0;
-//     char buf[16];
-//     int len = 0;
-//     while(1)
-//     {
-//         i++;
-//         len = snprintf(buf, 16, "Counter: %d", i);
+    uint8_t i = 0;
+    char buf[16];
+    int len = 0;
+    while(1)
+    {
+        i++;
+        len = snprintf(buf, 16, "Counter: %d", i);
 
-//         // Clear display
-//         pio_sm_put_blocking(pio, sm, HD44780_CLEAR_DISPLAY);
-//         sleep_ms(1);
+        // Clear display
+        pio_sm_put_blocking(pio, sm, HD44780_CLEAR_DISPLAY);
+        sleep_ms(1);
 
-//         // Move cursor to start
-//         pio_sm_put_blocking(pio, sm, HD44780_RETURN_HOME);
-//         sleep_ms(1);
+        // Move cursor to start
+        pio_sm_put_blocking(pio, sm, HD44780_RETURN_HOME);
+        sleep_ms(1);
 
-//         // Set RS to HIGH
-//         hd44780_set_rs(pio, sm, offset, 1);
+        // Set RS to HIGH
+        hd44780_set_rs(pio, sm, offset, 1);
 
-//         // Write to display
-//         for (int j = 0; j < len; j++) 
-//         {
-//             pio_sm_put_blocking(pio, sm, buf[j]);
+        // Write to display
+        for (int j = 0; j < len; j++) 
+        {
+            pio_sm_put_blocking(pio, sm, buf[j]);
             
-//         }
+        }
 
-//         //sleep_ms(1);
-//         // Set RS to LOW again
-//         hd44780_set_rs(pio, sm, offset, 0);
+        //sleep_ms(1);
+        // Set RS to LOW again
+        hd44780_set_rs(pio, sm, offset, 0);
 
-//         sleep_ms(1000);
-//     }
-// #endif
-// }
+        sleep_ms(1000);
+    }
+#endif
+}

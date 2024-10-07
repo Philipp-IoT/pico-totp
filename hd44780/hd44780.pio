@@ -2,7 +2,7 @@
 
 ; D4, D5, D6, D7, RS, RW, E
 
-.program hd44780
+.program hd44780_4bit
 .side_set 2 opt
 
 .wrap_target
@@ -30,14 +30,14 @@ waitbusy:
 .wrap
 
 % c-sdk {
-static inline void hd44780_program_init(PIO pio, uint sm, uint offset, uint pin) {
+static inline void hd44780_load_4bit(PIO pio, uint sm, uint offset, uint pin) {
    for(uint8_t i = 0; i < 7; i++)
    {
     pio_gpio_init(pio, pin+i);
    }
    pio_sm_set_consecutive_pindirs(pio, sm, pin, 7, true);
 
-   pio_sm_config c = hd44780_program_get_default_config(offset);
+   pio_sm_config c = hd44780_4bit_program_get_default_config(offset);
    sm_config_set_out_pins(&c, pin, 4);
    sm_config_set_in_pins(&c, pin);
    sm_config_set_set_pins(&c, pin, 5);
@@ -50,7 +50,7 @@ static inline void hd44780_program_init(PIO pio, uint sm, uint offset, uint pin)
 }
 %}
 
-.program hd44780_4bit
+.program hd44780_init
 .side_set 2 opt
     
 .wrap_target
@@ -61,14 +61,14 @@ static inline void hd44780_program_init(PIO pio, uint sm, uint offset, uint pin)
 .wrap
 
 % c-sdk {
-static inline void hd44780_4bit_init_program_init(PIO pio, uint sm, uint offset, uint pin) {
+static inline void hd44780_load_init(PIO pio, uint sm, uint offset, uint pin) {
    for(uint8_t i = 0; i < 7; i++)
    {
     pio_gpio_init(pio, pin+i);
    }
    pio_sm_set_consecutive_pindirs(pio, sm, pin, 7, true);
 
-   pio_sm_config c = hd44780_4bit_program_get_default_config(offset);
+   pio_sm_config c = hd44780_init_program_get_default_config(offset);
    sm_config_set_out_pins(&c, pin, 4);
    sm_config_set_set_pins(&c, pin, 5);
    sm_config_set_sideset_pins(&c, pin + 5);

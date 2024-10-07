@@ -48,7 +48,10 @@ pico_enable_stdio_usb(pico-totp 1)
 
 # Add the standard library to the build
 target_link_libraries(pico-totp
-        pico_stdlib)
+        pico_stdlib
+        hardware_pio
+        hd44780
+        )
 
 # Add the standard include files to the build
 target_include_directories(pico-totp PRIVATE
