@@ -33,6 +33,8 @@ project(pico-totp C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
+add_subdirectory(hd44780)
+
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(pico-totp main.cpp )

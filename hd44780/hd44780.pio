@@ -1,0 +1,80 @@
+.pio_version 0 // only requires PIO version 0
+
+; D4, D5, D6, D7, RS, RW, E
+
+.program hd44780
+.side_set 2 opt
+
+.wrap_target
+    pull block             side 0b00     ; Get the next byte to transfer
+    set pindirs, 0b11111
+    jmp !y skip_rs_set
+    set pins, 0b10000
+skip_rs_set:
+    out null, 24                         ; Remove padding 24 bits
+    out pins, 4            side 0b01 [3] ; Output first half, set E -> 1
+    nop                    side 0b00 [3] ; Generate negative edge on E -> Data gets sampled by HD44780
+    out pins, 4            side 0b01 [3] ; Output second half, set E -> 1
+    nop                    side 0b00 [3] ; Generate negative edge on E -> Data gets sampled by HD44780
+    set pins, 0b00000                    ; Reset output (not really required, but looks nice on analyzer ;))
+
+    set pindirs, 0b10000                 ; Set data pins to input
+    set pins, 0b00000                    ; Set RS to LOW
+waitbusy:
+    mov isr, null          side 0b11 [3] ; Clear ISR ISR:            0b00000000 00000000 00000000 00000000
+    in pins, 4             side 0b10 [3] ; Read in data:             0b76540000 00000000 00000000 00000000
+    in null, 31                          ;                           0b00000000 00000000 00000000 00000007
+    mov osr, isr          side 0b11 [3]  ; Move to OSR:              0b00000000 00000000 00000000 00000007
+    mov x, osr            side 0b10 [3]  ; Move to x
+    jmp x-- waitbusy                     ; Repeat of D7 is set
+.wrap
+
+% c-sdk {
+static inline void hd44780_program_init(PIO pio, uint sm, uint offset, uint pin) {
+   for(uint8_t i = 0; i < 7; i++)
+   {
+    pio_gpio_init(pio, pin+i);
+   }
+   pio_sm_set_consecutive_pindirs(pio, sm, pin, 7, true);
+
+   pio_sm_config c = hd44780_program_get_default_config(offset);
+   sm_config_set_out_pins(&c, pin, 4);
+   sm_config_set_in_pins(&c, pin);
+   sm_config_set_set_pins(&c, pin, 5);
+   sm_config_set_sideset_pins(&c, pin + 5);
+   sm_config_set_out_shift(&c, false, false, 32);
+   sm_config_set_clkdiv_int_frac(&c, 128, 0);
+
+   pio_sm_init(pio, sm, offset, &c);
+   pio_sm_set_enabled(pio, sm, true);
+}
+%}
+
+.program hd44780_4bit
+.side_set 2 opt
+    
+.wrap_target
+    pull block                            ; Get the next byte to transfer
+    out pins, 4            side 0b01 [3]
+    nop                    side 0b00 [3]
+    set pins, 0x00
+.wrap
+
+% c-sdk {
+static inline void hd44780_4bit_init_program_init(PIO pio, uint sm, uint offset, uint pin) {
+   for(uint8_t i = 0; i < 7; i++)
+   {
+    pio_gpio_init(pio, pin+i);
+   }
+   pio_sm_set_consecutive_pindirs(pio, sm, pin, 7, true);
+
+   pio_sm_config c = hd44780_4bit_program_get_default_config(offset);
+   sm_config_set_out_pins(&c, pin, 4);
+   sm_config_set_set_pins(&c, pin, 5);
+   sm_config_set_sideset_pins(&c, pin + 5);
+   sm_config_set_clkdiv_int_frac(&c, 128, 0);
+
+   pio_sm_init(pio, sm, offset, &c);
+   pio_sm_set_enabled(pio, sm, true);
+}
+%}
