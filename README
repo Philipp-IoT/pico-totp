@@ -1,0 +1,13 @@
+# pico-totp
+
+A TOTP generator using Raspberry Pi Pico. 
+
+## Use Case
+
+This project is a TOTP generator using the Raspberry Pi Pico, intended for educational purposes. It is designed to help the developer learn and practice embedded systems programming and TOTP algorithm implementation. The project is not intended for productive use, and many aspects are not fully implemented. No special attention is given to the secure storage of keys. It should be considered as a proof of concept.
+
+## Hardware Setup
+
+In addition to the Raspberry Pi Pico, a 2x16 character LCD with an HD44780 controller and a DS1307 real-time clock are used. The LCD is controlled via a 4-bit interface using a custom-developed PIO program. The real-time clock is connected via I2C.
+
+
