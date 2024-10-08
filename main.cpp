@@ -10,6 +10,8 @@
 #include "pico/stdlib.h"
 #include "hd44780.hpp"
 
+#include "interface_rtc.hpp"
+
 constexpr Driver::Hd44780::CustomCharacterData loading_left {
 	0b11111,
 	0b10000,

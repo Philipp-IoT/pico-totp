@@ -8,6 +8,9 @@
 
 #pragma once
 
+#include <cstdint>
+#include <functional>
+
 class InterfaceRTC {
 public:
     virtual ~InterfaceRTC() = default;

@@ -1,3 +1,4 @@
-add_library(interface_rts INTERFACE)
+add_library(interface_rtc INTERFACE)
 
-target_include_directories(interface_rts PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
+target_include_directories(interface_rtc INTERFACE ${CMAKE_CURRENT_LIST_DIR}/include)
+

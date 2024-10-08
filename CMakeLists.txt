@@ -34,6 +34,8 @@ project(pico-totp C CXX ASM)
 pico_sdk_init()
 
 add_subdirectory(hd44780)
+add_subdirectory(interface_rtc)
+add_subdirectory(ds1307)
 
 # Add executable. Default name is the project name, version 0.1
 
@@ -51,6 +53,7 @@ target_link_libraries(pico-totp
         pico_stdlib
         hardware_pio
         hd44780
+        interface_rtc
         )
 
 # Add the standard include files to the build
