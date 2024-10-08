@@ -10,4 +10,6 @@ This project is a TOTP generator using the Raspberry Pi Pico, intended for educa
 
 In addition to the Raspberry Pi Pico, a 2x16 character LCD with an HD44780 controller and a DS1307 real-time clock are used. The LCD is controlled via a 4-bit interface using a custom-developed PIO program. The real-time clock is connected via I2C.
 
+## Build Environment
 
+The project was set up using Visual Studio Code and the official Raspberry Pi Pico extension in a Fedora 40 container (via Distrobox). Specific adjustments were made for debugging, which are not further detailed here. A Segger J-Link Debugger was used with an external GDB binary (see launch.json).
