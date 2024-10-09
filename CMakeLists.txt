@@ -33,8 +33,11 @@ project(pico-totp C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
-add_subdirectory(hd44780)
+add_subdirectory(interface_i2c)
 add_subdirectory(interface_rtc)
+
+add_subdirectory(i2c)
+add_subdirectory(hd44780)
 add_subdirectory(ds1307)
 
 # Add executable. Default name is the project name, version 0.1
@@ -52,8 +55,13 @@ pico_enable_stdio_usb(pico-totp 1)
 target_link_libraries(pico-totp
         pico_stdlib
         hardware_pio
+        hardware_i2c
+        hardware_gpio
         hd44780
         interface_rtc
+        interface_i2c
+        i2c
+        ds1307
         )
 
 # Add the standard include files to the build

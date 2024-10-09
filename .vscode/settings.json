@@ -104,7 +104,8 @@
         "streambuf": "cpp",
         "thread": "cpp",
         "cinttypes": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "span": "cpp"
     },
     "cortex-debug.variableUseNaturalFormat": false,
 }

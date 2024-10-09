@@ -7,6 +7,7 @@
  */
 #pragma once
 
+#include "interface_i2c.hpp"
 #include "interface_rtc.hpp"
 
 namespace Driver::Ds1307
@@ -17,11 +18,17 @@ namespace Driver::Ds1307
     class Ds1307 : public InterfaceRTC
     {
     public:
-        Ds1307();
+        Ds1307(InterfaceI2C &i2c);
         ~Ds1307();
 
         bool setTime(int64_t unixTimestamp) override;
         bool readTime(RtcReadSuccessCallback onSuccess) const override;
+
+    private:
+        InterfaceI2C &mI2c;
+
+        uint8_t DecToBcd(uint8_t val) const;
+        uint8_t BcdToDec(uint8_t val) const;
     };
 
 }  // namespace Driver::Ds1307
